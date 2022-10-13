@@ -1,5 +1,7 @@
 # Brrr's Planck
 
+![Brrr's Planck](https://raw.githubusercontent.com/daniele-salvagni/dan.salvagni.io/master/public/assets/img/content/003/my-planck.png)
+
 ## 🛠️ Building the QMK Firmware
 
     ./flash.sh -b planck
