@@ -1,0 +1,7 @@
+*.bin
+*.hex
+*.swp
+.vscode
+.ccls-cache/*
+
+brrr/
