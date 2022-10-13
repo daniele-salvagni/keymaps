@@ -19,6 +19,7 @@ enum planck_keycodes {
   ARROW,   // ASCII arrows
   EMAIL,   // daniele.salvagni@gmail.com
   STACK,   // stackoverflow.com
+  CLOG,    // console.log();
   SRCHSEL, // search in new tab
   LCRL,    // {}
   LSQR,    // []
@@ -71,10 +72,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * | Ctl  |  Fn  |  GUI | Alt  |   ▼  |    Space    |   ▲  |   '  |   ←  |   ↓  |   →  |
    * `-----------------------------------------------------------------------------------*/
   [_QWERTY] = LAYOUT_planck_grid(
-    KC_GESC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-    KC_MHEN, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS,
-    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_UP,   KC_SLSH,
-    KC_LCTL, FUNCT,   KC_LGUI, KC_LALT, LOWER,   KC_SPC,  KC_SPC,  R_ENT,   KC_QUOT, KC_LEFT, KC_DOWN, KC_RGHT),
+    KC_GESC, KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_BSPC,
+    KC_MHEN, KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_MINS,
+    KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_UP  , KC_SLSH,
+    KC_LCTL, FUNCT  , KC_LGUI, KC_LALT, LOWER  , KC_SPC , KC_SPC , R_ENT  , KC_QUOT, KC_LEFT, KC_DOWN, KC_RGHT),
 
   /* #Lower------------------------------------------------------------------------------.
    * |   `  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |  ()  |   )  | Bksp |
@@ -86,10 +87,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |      |      |      |      |      |             |      |      |      |      |  =>  |
    * `-----------------------------------------------------------------------------------*/
   [_LOWER] = LAYOUT_planck_grid(
-    KC_GRAVE,KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, M_PRN,   KC_RPRN, _______,
-    KC_TAB,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PLUS,
-    _______, M_CRL,   KC_RCBR, KC_QUOT, KC_EQL,  KC_DQT,  ___x___, KC_PIPE, M_SQR,   KC_RBRC, ___x___, KC_BSLS,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ARROW),
+    KC_GRAVE,KC_EXLM, KC_AT  , KC_HASH, KC_DLR , KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, M_PRN  , KC_RPRN, _______,
+    KC_TAB , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_PLUS,
+    _______, M_CRL  , KC_RCBR, KC_QUOT, KC_EQL , KC_DQT , ___x___, KC_PIPE, M_SQR  , KC_RBRC, ___x___, KC_BSLS,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ARROW) ,
 
   /* #Raise------------------------------------------------------------------------------.
    * |      |      |      |      |   €  |   °  |      |      |   ×  |      |   ø  | Del  |
@@ -101,40 +102,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |      |      |      |      |      |             |      |      |      |      |      |
    * `-----------------------------------------------------------------------------------*/
   [_RAISE] = LAYOUT_planck_grid(
-    _______, ___x___, ___x___, ___x___, S_EUR,   S_DGR,   ___x___, ___x___, S_CRS,   ___x___, S_EMP,   KC_DEL,
-    KC_TAB,  ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___,
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, S_LQT,   S_RQT,   _______, S_FRA,
+    _______, ___x___, ___x___, ___x___, S_EUR  , S_DGR  , ___x___, ___x___, S_CRS  , ___x___, S_EMP  , KC_DEL ,
+    KC_TAB , ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___,
+    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, S_LQT  , S_RQT  , _______, S_FRA  ,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______),
 
   /* #Funct------------------------------------------------------------------------------.
    * | Tsk  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | CAD  |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * | Caps |  F11 |  F12 |  F13 | STACK|      |      |      |      |      |      | PSCR |
+   * | Caps |  F11 |  F12 |  F13 |so.com|      |      |      |      |c.log |      | PSCR |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      | LDSK | RDSK | SRCH | EMAIL| Vol- | Vol+ |      |      |      | PgUp |      |
+   * |      | LDSK | RDSK | WSrc | @@@@ | Vol- | Vol+ |      |      |      | PgUp |      |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
    * |      |      |      |      |      |     Mute    | Ret  |      | Home | PgDn | End  |
    * `-----------------------------------------------------------------------------------*/
   [_FUNCT] = LAYOUT_planck_grid(
-    TASK,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  C(A(KC_DEL)),
-    KC_CAPS, KC_F11,  KC_F12,  KC_F13,  STACK,   ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_PSCR,
-    _______, L_DESK,  R_DESK,  SRCHSEL, EMAIL,   KC_VOLD, KC_VOLU, ___x___, ___x___, ___x___, KC_PGUP, ___x___,
-    _______, _______, _______, _______, _______, KC_MUTE, KC_MUTE, _______, _______, KC_HOME, KC_PGDN, KC_END),
-
-  /* #Keyp-------------------------------------------------------------------------------.
-   * |      |      |      |      |      |      |      |   7  |   8  |   9  |      |      |
-   * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |      |      |      |      |      |      |   4  |   5  |   6  |      |      |
-   * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |      |      |      |      |      |      |   1  |   2  |   3  |      | KEYP |
-   * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |      |      |      |      |             |      |   0  |      |      |      |
-   * `-----------------------------------------------------------------------------------*/
-  [_KEYP] = LAYOUT_planck_grid(
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_7,    KC_8,    KC_9,    ___x___, _______,
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_4,    KC_5,    KC_6,    ___x___, ___x___,
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_1,    KC_2,    KC_3,    _______, KEYP,
-    _______, _______, _______, _______, _______, _______, _______, _______, KC_0,    _______, _______, _______),
+    TASK   , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , C(A(KC_DEL)),
+    KC_CAPS, KC_F11 , KC_F12 , KC_F13 , STACK  , ___x___, ___x___, ___x___, ___x___, CLOG   , ___x___, KC_PSCR,
+    _______, L_DESK , R_DESK , SRCHSEL, EMAIL  , KC_VOLD, KC_VOLU, ___x___, ___x___, ___x___, KC_PGUP, ___x___,
+    _______, _______, _______, _______, _______, KC_MUTE, KC_MUTE, KC_ENT , _______, KC_HOME, KC_PGDN, KC_END),
 
   /* #ADJUST-----------------------------------------------------------------------------.
    * |      | Reset|Debug | RGB  |RGBMOD| HUE+ | HUE- | SAT+ | SAT- |BRGTH+|BRGTH-|      |
@@ -148,8 +134,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ADJUST] = LAYOUT_planck_grid(
     _______, QK_BOOT, DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, _______,
     _______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  _______, _______, _______, _______,
-    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  CK_TOGG, _______, _______, _______, _______, _______, KEYP,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TURBO)
+    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  CK_TOGG, _______, _______, _______, _______, _______, KEYP   ,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TURBO) ,
+
+  /* #Keyp-------------------------------------------------------------------------------.
+   * |      |      |      |      |      |      |      |   7  |   8  |   9  |      |      |
+   * |------+------+------+------+------+-------------+------+------+------+------+------|
+   * |      |      |      |      |      |      |      |   4  |   5  |   6  |      |      |
+   * |------+------+------+------+------+-------------+------+------+------+------+------|
+   * |      |      |      |      |      |      |      |   1  |   2  |   3  |      | KEYP |
+   * |------+------+------+------+------+-------------+------+------+------+------+------|
+   * |      |      |      |      |      |             |      |   0  |      |      |      |
+   * `-----------------------------------------------------------------------------------*/
+  [_KEYP] = LAYOUT_planck_grid(
+    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_7   , KC_8   , KC_9   , ___x___, _______,
+    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_4   , KC_5   , KC_6   , ___x___, ___x___,
+    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_1   , KC_2   , KC_3   , _______, KEYP   ,
+    _______, _______, _______, _______, _______, _______, _______, _______, KC_0   , _______, _______, _______)
 };
 
 
@@ -206,6 +207,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("stackoverflow.com");
       }
       return false;
+    // .......................................................................... console.log();
+    case CLOG:
+      if (record->event.pressed) {
+        SEND_STRING("console.log();"SS_TAP(X_LEFT)SS_TAP(X_LEFT));
+      }
+      return false;
     // .............................................................................. PTT & Alt-Tab
     case KC_MHEN: ;  // c needs a statement ";" after a label
       // Keep track of which key has been registered to then unregister the correct one
@@ -228,8 +235,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case M_CRL:
       if (record->event.pressed) {
         if (!record->tap.count) {
-          SEND_STRING("{}");
-          tap_code(KC_LEFT);
+          SEND_STRING("{}"SS_TAP(X_LEFT));
           return false;
         }
         tap_code16(KC_LCBR);
@@ -239,8 +245,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case M_SQR:
       if (record->event.pressed) {
         if (!record->tap.count) {
-          SEND_STRING("[]");
-          tap_code(KC_LEFT);
+          SEND_STRING("[]"SS_TAP(X_LEFT));
           return false;
         }
         tap_code16(KC_LBRC);
@@ -250,8 +255,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case M_PRN:
       if (record->event.pressed) {
         if (!record->tap.count) {
-          SEND_STRING("()");
-          tap_code(KC_LEFT);
+          SEND_STRING("()"SS_TAP(X_LEFT));
           return false;
         }
         tap_code16(KC_LPRN);
