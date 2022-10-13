@@ -3,18 +3,18 @@
 #include "muse.h"
 
 enum planck_layers {
-  _QWERTY,
-  _LOWER,
-  _RAISE,
-  _FUNCT,
-  _ADJUST,
-  _KEYP
+  _QWERTY, // base layer
+  _LOWER,  // numbers and symbols
+  _RAISE,  // extra symbols
+  _FUNCT,  // special functions
+  _ADJUST, // keyboard functions
+  _KEYP    // keypad
 };
 
 enum planck_keycodes {
   QWERTY = SAFE_RANGE,
-  TURBO,
-  ARROW,
+  TURBO,   // mouse click spammer
+  ARROW,   //
   EMAIL,
   STACK,
   SRCHSEL,
@@ -23,12 +23,25 @@ enum planck_keycodes {
   LPRN
 };
 
+// Layers
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define FUNCT MO(_FUNCT)
 #define KEYP  TG(_KEYP)
-
+// Enter on tap, Raise on hold
 #define R_ENT LT(RAISE, KC_ENT)
+
+// Matching brackets
+#define M_PRN LT(0,LPRN)
+#define M_SQR LT(0,LSQR)
+#define M_CRL LT(0,LCRL)
+
+// Virtual Desktop
+#define L_DESK C(G(KC_LEFT))
+#define R_DESK C(G(KC_RGHT))
+
+// Task Manager
+#define TASK C(S(KC_ESC))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -62,10 +75,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_planck_grid(
-    KC_GRAVE, KC_EXLM,       KC_AT,   KC_HASH,  KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR,       LT(0,LPRN), KC_RPRN, _______,
-    KC_TAB,   KC_1,          KC_2,    KC_3,     KC_4,    KC_5,    KC_6,    KC_7,    KC_8,          KC_9,          KC_0,    KC_PLUS,
-    _______,  LT(0,LCRL), KC_RCBR, KC_QUOTE, KC_EQL,  KC_DQT,  _______, KC_PIPE, LT(0,LSQR), KC_RBRC,       _______, KC_BSLS,
-    _______,  _______,       _______, _______,  _______, _______, _______, _______, _______,       _______,       _______, ARROW
+    KC_GRAVE, KC_EXLM, KC_AT,   KC_HASH,  KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, M_PRN,   KC_RPRN, _______,
+    KC_TAB,   KC_1,    KC_2,    KC_3,     KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PLUS,
+    _______,  M_CRL,   KC_RCBR, KC_QUOTE, KC_EQL,  KC_DQT,  _______, KC_PIPE, M_SQR,   KC_RBRC, _______, KC_BSLS,
+    _______,  _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, ARROW
 ),
 
 /* Raise
@@ -98,10 +111,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_FUNCT] = LAYOUT_planck_grid(
-    C(S(KC_ESC)), KC_F1,         KC_F2,         KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  C(A(KC_DEL)),
-    KC_CAPS,      KC_F11,        KC_F12,        KC_F13,  STACK,   KC_F15,  _______, _______, _______, _______, _______, KC_PSCR,
-    _______,      C(G(KC_LEFT)), C(G(KC_RGHT)), SRCHSEL, EMAIL,   KC_VOLD, KC_VOLU, _______, _______, _______, KC_PGUP, _______,
-    _______,      _______,       _______,       _______, _______, KC_MUTE, KC_MUTE, _______, _______, KC_HOME, KC_PGDN, KC_END
+    TASK,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  C(A(KC_DEL)),
+    KC_CAPS, KC_F11,  KC_F12,  KC_F13,  STACK,   KC_F15,  _______, _______, _______, _______, _______, KC_PSCR,
+    _______, L_DESK,  R_DESK,  SRCHSEL, EMAIL,   KC_VOLD, KC_VOLU, _______, _______, _______, KC_PGUP, _______,
+    _______, _______, _______, _______, _______, KC_MUTE, KC_MUTE, _______, _______, KC_HOME, KC_PGDN, KC_END
 ),
 
 /* Keypad
@@ -240,7 +253,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    case LT(0,LCRL):
+    case M_CRL:
       if (record->event.pressed) {
         if (!record->tap.count) {
           SEND_STRING("{}");
@@ -251,7 +264,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
-    case LT(0,LSQR):
+    case M_SQR:
       if (record->event.pressed) {
         if (!record->tap.count) {
           SEND_STRING("[]");
@@ -262,7 +275,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
-    case LT(0,LPRN):
+    case M_PRN:
       if (record->event.pressed) {
         if (!record->tap.count) {
           SEND_STRING("()");
@@ -285,6 +298,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+// Audio stuff
 
 bool muse_mode = false;
 uint8_t last_muse_note = 0;
