@@ -2,17 +2,16 @@
 #include "features/mouse_turbo_click.h"
 #include "muse.h"
 
-// .................................................................................. Custom Layers
+// ................................................................................... Custom Layers
 enum planck_layers {
   _QWERTY, // base layer
   _LOWER,  // numbers and symbols
   _RAISE,  // extra symbols
   _FUNCT,  // special functions
   _ADJUST, // keyboard functions
-  _KEYP    // keypad
 };
 
-// ................................................................................ Custom Keycodes
+// ................................................................................. Custom Keycodes
 enum planck_keycodes {
   QWERTY = SAFE_RANGE,
   TURBO,   // mouse click spammer
@@ -26,12 +25,12 @@ enum planck_keycodes {
   LPRN     // ()
 };
 
-// .............................................................................. Macro Definitions
+// ............................................................................... Macro Definitions
 // Layers
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define FUNCT MO(_FUNCT)
-#define KEYP  TG(_KEYP)
+// #define KEYP  TG(_KEYP)
 // Enter on tap, Raise on hold
 #define R_ENT LT(RAISE, KC_ENT)
 
@@ -52,14 +51,16 @@ enum planck_keycodes {
 #define S_DGR ALGR(KC_COLN) // °
 #define S_CRS ALGR(KC_EQL)  // ×
 #define S_EMP ALGR(KC_L)    // ø
-#define S_LQT ALGR(KC_LBRC) // «
+#define S_LQT ALGR(KC_LBRC) // «     áàaaaoà
 #define S_RQT ALGR(KC_RBRC) // »
 #define S_FRA ALGR(KC_PLUS) // ÷
 
 // Transparent / Off key
 #define ___x___ KC_NO
 
-// ......................................................................................... Keymap
+// TODO: ⌘, ⌥, ⇧,
+
+// ......................................................................................... Keymaps
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* #Qwerty-----------------------------------------------------------------------------.
@@ -69,42 +70,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+------+------+------+------+------+------|
    * | Sft  |   z  |   x  |   c  |   v  |   b  |   n  |   m  |   ,  |   .  |   ↑  |   /  |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
-   * | Ctl  |  Fn  |  GUI | Alt  |   ▼  |    Space    |   ▲  |   '  |   ←  |   ↓  |   →  |
+   * | Ctl  |  Fn  |  GUI |  Alt |   ▼  |    Space    |   ▲  | Rtrn |   ←  |   ↓  |   →  |
    * `-----------------------------------------------------------------------------------*/
   [_QWERTY] = LAYOUT_planck_grid(
     KC_GESC, KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_BSPC,
     KC_MHEN, KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_MINS,
     KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_UP  , KC_SLSH,
-    KC_LCTL, FUNCT  , KC_LGUI, KC_LALT, LOWER  , KC_SPC , KC_SPC , R_ENT  , KC_QUOT, KC_LEFT, KC_DOWN, KC_RGHT),
+    KC_LCTL, FUNCT  , KC_LGUI, KC_LALT, LOWER  , KC_SPC , KC_SPC , RAISE  , KC_ENT, KC_LEFT , KC_DOWN, KC_RGHT),
 
   /* #Lower------------------------------------------------------------------------------.
    * |   `  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |  ()  |   )  | Bksp |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
    * | Tab  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   +  |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
-   * |      |  {}  |   }  |   '  |   =  |   "  |      |   |  |  []  |   ]  |      |   \  |
+   * |      |  {}  |   }  |      |   =  |      |      |   |  |  []  |   ]  |      |   \  |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
    * |      |      |      |      |      |             |      |      |      |      |  =>  |
    * `-----------------------------------------------------------------------------------*/
   [_LOWER] = LAYOUT_planck_grid(
     KC_GRAVE,KC_EXLM, KC_AT  , KC_HASH, KC_DLR , KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, M_PRN  , KC_RPRN, _______,
     KC_TAB , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_PLUS,
-    _______, M_CRL  , KC_RCBR, KC_QUOT, KC_EQL , KC_DQT , ___x___, KC_PIPE, M_SQR  , KC_RBRC, ___x___, KC_BSLS,
+    _______, M_CRL  , KC_RCBR, ___x___, KC_EQL , ___x___, ___x___, KC_PIPE, M_SQR  , KC_RBRC, ___x___, KC_BSLS,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ARROW) ,
 
   /* #Raise------------------------------------------------------------------------------.
-   * |      |      |      |      |   €  |   °  |      |      |   ×  |      |   ø  | Del  |
+   * |      |      |      |      |   €  |   °  | PgUp | Home |   ↑  |  End |   ø  | Del  |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * | Tab  |      |      |      |      |      |      |      |      |      |      |      |
+   * | Tab  |      |      |      |      |      | PgDn |   ←  |   ↓  |   →  |      |   ×  |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |      |      |      |      |      |      |      |   «  |   »  |      |   ÷  |
+   * |      |      |      |      |      |      |      |   `  |   '  |   "  |      |   ÷  |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
    * |      |      |      |      |      |             |      |      |      |      |      |
    * `-----------------------------------------------------------------------------------*/
   [_RAISE] = LAYOUT_planck_grid(
-    _______, ___x___, ___x___, ___x___, S_EUR  , S_DGR  , ___x___, ___x___, S_CRS  , ___x___, S_EMP  , KC_DEL ,
-    KC_TAB , ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___,
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, S_LQT  , S_RQT  , _______, S_FRA  ,
+    _______, ___x___, ___x___, ___x___, S_EUR  , S_DGR  , KC_PGUP, KC_HOME, KC_UP  , KC_END , S_EMP  , KC_DEL ,
+    KC_TAB , ___x___, ___x___, ___x___, ___x___, ___x___, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, ___x___, S_CRS  ,
+    _______, S_LQT  , S_RQT  , ___x___, ___x___, ___x___, ___x___, KC_GRV , KC_QUOT, KC_DQT , _______, S_FRA  ,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______),
 
   /* #Funct------------------------------------------------------------------------------.
@@ -127,100 +128,96 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+------+------+------+------+------+------|
    * |      |      |MUSmod|Aud on|Audoff|AGnorm|AGswap|Qwerty|      |      |      |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
-   * |      |Voice-|Voice+|Mus on|Musoff|Clicky|      |      |      |      |      | KEYP |
+   * |      |Voice-|Voice+|Mus on|Musoff|Clicky|      |      |      |      |      |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
    * |      |      |      |      |      |             |      |      |      |      |TURBO |
    * `-----------------------------------------------------------------------------------*/
   [_ADJUST] = LAYOUT_planck_grid(
     _______, QK_BOOT, DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, _______,
     _______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  _______, _______, _______, _______,
-    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  CK_TOGG, _______, _______, _______, _______, _______, KEYP   ,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TURBO) ,
-
-  /* #Keyp-------------------------------------------------------------------------------.
-   * |      |      |      |      |      |      |      |   7  |   8  |   9  |      |      |
-   * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |      |      |      |      |      |      |   4  |   5  |   6  |      |      |
-   * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |      |      |      |      |      |      |   1  |   2  |   3  |      | KEYP |
-   * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |      |      |      |      |             |      |   0  |      |      |      |
-   * `-----------------------------------------------------------------------------------*/
-  [_KEYP] = LAYOUT_planck_grid(
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_7   , KC_8   , KC_9   , ___x___, _______,
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_4   , KC_5   , KC_6   , ___x___, ___x___,
-    _______, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, KC_1   , KC_2   , KC_3   , _______, KEYP   ,
-    _______, _______, _______, _______, _______, _______, _______, _______, KC_0   , _______, _______, _______)
+    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  CK_TOGG, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TURBO)
 };
 
 
-// ................................................................................ Layer Underglow
+// ................................................................................. Layer Underglow
 // Starting with LED 0, light 2 LEDs - Starting with 8, light 1 LED
-const rgblight_segment_t PROGMEM my_lower_layer[] = RGBLIGHT_LAYER_SEGMENTS( {0, 2, HSV_TEAL}, {8, 1, HSV_TEAL} );
-const rgblight_segment_t PROGMEM my_raise_layer[] = RGBLIGHT_LAYER_SEGMENTS( {0, 2, HSV_RED}, {8, 1, HSV_RED} );
-const rgblight_segment_t PROGMEM my_funct_layer[] = RGBLIGHT_LAYER_SEGMENTS( {0, 2, HSV_CHARTREUSE}, {8, 1, HSV_CHARTREUSE} );
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    my_lower_layer,
-    my_raise_layer,
-    my_funct_layer
+const rgblight_segment_t PROGMEM my_lower_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+  {0, 2, HSV_TEAL}, {8, 1, HSV_TEAL}
 );
+const rgblight_segment_t PROGMEM my_raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+  {0, 2, HSV_RED}, {8, 1, HSV_RED}
+);
+const rgblight_segment_t PROGMEM my_funct_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+  {0, 2, HSV_CHARTREUSE}, {8, 1, HSV_CHARTREUSE}
+);
+
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+  my_lower_layer,
+  my_raise_layer,
+  my_funct_layer
+);
+
 void keyboard_post_init_user(void) {
-    // Enable the LED layers
-    rgblight_layers = my_rgb_layers;
+  // Enable the LED layers
+  rgblight_layers = my_rgb_layers;
 }
 
+// .................................................................................... Layer Change
 layer_state_t layer_state_set_user(layer_state_t state) {
   rgblight_set_layer_state(0, layer_state_cmp(state, _RAISE));
   rgblight_set_layer_state(1, layer_state_cmp(state, _LOWER));
   rgblight_set_layer_state(2, layer_state_cmp(state, _FUNCT));
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+  state = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+  return state;
 }
 
+// ................................................................................. Custom Keycodes
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Turbo clicker macro
   if (!process_mouse_turbo_click(keycode, record, TURBO)) { return false; }
 
   switch (keycode) {
-    // ............................................................................... Qwerty Layer
+    // ................................................................. Qwerty Layer
     case QWERTY:
       if (record->event.pressed) {
         print("mode just switched to qwerty\n");
         set_single_persistent_default_layer(_QWERTY);
       }
       return false;
-    // ................................................................................ ASCII Arrow
+    // .................................................................. ASCII Arrow
     case ARROW:
       if (record->event.pressed) {
         //send_unicode_string(shifted ? "\xe2\x87\x92" : "\xe2\x86\x92");
         SEND_STRING((get_mods() & MOD_MASK_SHIFT) ? "->" : "=>");
       }
       return false;
-    // ................................................................. daniele.salvagni@gmail.com
+    // ................................................... daniele.salvagni@gmail.com
     case EMAIL:
       if (record->event.pressed) {
         SEND_STRING("daniele.salvagni@gmail.com");
       }
       return false;
-    // .......................................................................... stackoverflow.com
+    // ............................................................ stackoverflow.com
     case STACK:
       if (record->event.pressed) {
         SEND_STRING("stackoverflow.com");
       }
       return false;
-    // .......................................................................... console.log();
+    // ............................................................... console.log();
     case CLOG:
       if (record->event.pressed) {
         SEND_STRING("console.log();"SS_TAP(X_LEFT)SS_TAP(X_LEFT));
       }
       return false;
-    // .............................................................................. PTT & Alt-Tab
+    // ............................................................ PTT & Alt/GUI-Tab
     case KC_MHEN: ;  // c needs a statement ";" after a label
-      // Keep track of which key has been registered to then unregister the correct one
+      // Keep track of the registered to then unregister the correct one
       static uint8_t reg_kc = 0;
 
       if (record->event.pressed) { // MHEN key pressed
-        // If ALT is pressed, send TAB instead of MHEN (PTT Key)
-        reg_kc = (get_mods() & MOD_MASK_ALT) ? KC_TAB : KC_MHEN;
+        // If ALT or GUI is pressed, send TAB instead of MHEN (PTT Key)
+        reg_kc = (get_mods() & MOD_MASK_AG) ? KC_TAB : KC_MHEN;
         add_key(reg_kc);
       } else { // MHEN key depressed
         if (reg_kc != 0) {
@@ -228,10 +225,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           reg_kc = 0;
         }
       }
-      send_keyboard_report(); // because we are bypassing register_code/unregister_code
+      send_keyboard_report(); // because we are bypassing register/unregister_code
       return false;
-      break;
-    // .................................................................................... {} Pair
+    // ...................................................................... {} Pair
     case M_CRL:
       if (record->event.pressed) {
         if (!record->tap.count) {
@@ -241,7 +237,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         tap_code16(KC_LCBR);
       }
       return false;
-    // .................................................................................... [] Pair
+    // ...................................................................... [] Pair
     case M_SQR:
       if (record->event.pressed) {
         if (!record->tap.count) {
@@ -251,7 +247,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         tap_code16(KC_LBRC);
       }
       return false;
-    // .................................................................................... () Pair
+    // ...................................................................... () Pair
     case M_PRN:
       if (record->event.pressed) {
         if (!record->tap.count) {
@@ -261,7 +257,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         tap_code16(KC_LPRN);
       }
       return false;
-    // .......................................................................... Search in New Tab
+    // ............................................................ Search in New Tab
     case SRCHSEL:  // Searches the current selection in a new tab.
       if (record->event.pressed) {
       // On Mac change LCTL to LGUI.
@@ -273,7 +269,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 
-// .................................................................................... Audio Stuff
+// ..................................................................................... Audio Stuff
 bool muse_mode = false;
 uint8_t last_muse_note = 0;
 uint16_t muse_counter = 0;
